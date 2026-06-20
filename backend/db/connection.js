@@ -19,4 +19,8 @@ function closeDb() {
   }
 }
 
+// Graceful shutdown handlers
+process.on('SIGINT', closeDb);
+process.on('SIGTERM', closeDb);
+
 module.exports = { getDb, closeDb };

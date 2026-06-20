@@ -63,13 +63,15 @@ const insertSQL = `
 `;
 
 try {
-  const stmt = db.prepare(insertSQL);
-  
-  sampleBooks.forEach(book => {
-    stmt.run(book.title, book.description, book.notes, book.read_status);
-    console.log(`Inserted: ${book.title}`);
+  const insert = db.transaction((books) => {
+    const stmt = db.prepare(insertSQL);
+    for (const book of books) {
+      stmt.run(book.title, book.description, book.notes, book.read_status);
+      console.log(`Inserted: ${book.title}`);
+    }
   });
   
+  insert(sampleBooks);
   console.log('Sample data seeded successfully.');
 } catch (err) {
   console.error('Error inserting data:', err.message);

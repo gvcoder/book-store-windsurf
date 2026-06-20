@@ -103,6 +103,10 @@ app.put('/api/books/:id', (req, res) => {
     }
     
     // Validation
+    if (title !== undefined && title.trim() === '') {
+      return res.status(400).json({ error: 'Title cannot be empty' });
+    }
+    
     if (read_status && !['read', 'yet_to_read'].includes(read_status)) {
       return res.status(400).json({ error: 'read_status must be either "read" or "yet_to_read"' });
     }
